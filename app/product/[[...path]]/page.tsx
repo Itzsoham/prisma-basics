@@ -11,20 +11,22 @@ export default async function Page({ params }: { params: { path: string[] } }) {
   const method = params.path[0];
   const id = params.path[1];
 
+  const product = await getProductById(parseInt(id));
+
   if (method === "new") {
     return <AddProduct />;
   }
-  if (method === "edit") {
-    return <AddProduct edit id={id} />;
-  }
+
   if (method === "delete") {
     return <DeleteProduct id={id} />;
   }
 
-  const product = await getProductById(parseInt(id));
-
   if (!product) {
     return <div>Product not found</div>;
+  }
+
+  if (method === "edit") {
+    return <AddProduct edit id={id} product={product} />;
   }
 
   return (
